@@ -7,9 +7,8 @@ import time
 from roboid import *
 
 class RidarActionServer(Node):
-
     def __init__(self):
-        super().__init__('beagle_action_server')
+        super().__init__('beagle_action')
         self.action_server = ActionServer(
             self,
             Distbeagle,
@@ -21,8 +20,7 @@ class RidarActionServer(Node):
         self.publisher = self.create_publisher(Float64, 'target_distance', 10)
         self.current_distance = 0.0
 
-
-    def goal_callback(self, goal_request):
+    def goal_callback(self, goal_handle):
         self.get_logger().info('Received goal request')
         return GoalResponse.ACCEPT
 
@@ -31,23 +29,28 @@ class RidarActionServer(Node):
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal_handle):
+        beagle = Beagle()
+        beagle.start_lidar()
+        beagle.wait_until_lidar_ready()
+        print('lidar starts')
+
         self.get_logger().info('Executing goal...')
         feedback_msg = Distbeagle.Feedback()
         result_msg = Distbeagle.Result()
 
         while rclpy.ok():
-            
-            beagle = Beagle()
+            rear_distance = beagle.rear_lidar()
+            right_distance = beagle.right_lidar()
+            right_rear_distance = beagle.right_rear_lidar()
+            front_distance = beagle.front_lidar()
+            right_front_distance = beagle.right_front_lidar()
 
-            beagle.start_lidar()
-            beagle.wait_until_lidar_ready()    
-            
-            if 250 <= beagle.rear_lidar() or beagle.right_lidar() or beagle.right_rear_lidar() <= 400:
-                beagle.sound("siren", 1)
+            if 250 <= rear_distance <= 400 or 250 <= right_distance <= 400 or 250 <= right_rear_distance <= 400:
+                beagle.sound("engine", 1)
                 time.sleep(1)
 
-            if 60 < beagle.rear_lidar() or beagle.right_lidar() or beagle.right_rear_lidar() < 250:
-                beagle.sound("siren", 2)
+            if 60 < rear_distance < 250 or 60 < right_distance < 250 or 60 < right_rear_distance < 250:
+                beagle.sound("siren", 1)
                 time.sleep(1)
 
             if beagle.rear_lidar() <= 60:
@@ -57,19 +60,19 @@ class RidarActionServer(Node):
                 dispose()
                 break
 
-            if 250 <= beagle.front_lidar() or beagle.right_front_lidar() <= 400:
+            if 250 <= front_distance <= 400 or 250 <= right_front_distance <= 400:
+                beagle.sound("march", 1)
+                time.sleep(1)
+
+            if 60 < front_distance < 250 or 60 < right_front_distance < 250:
                 beagle.sound("good job", 1)
                 time.sleep(1)
 
-            if 60 < beagle.front_lidar() or beagle.right_front_lidar() <= 250:
-                beagle.sound("good job", 2)
-                time.sleep(1)
-
-            if beagle.front_lidar() <= 60:
+            if front_distance <= 60:
                 beagle.sound("happy", 1)
                 time.sleep(1)
                 print('Winner!!')
-                dispose()
+                beagle.dispose()
                 break
 
             self.current_distance = beagle.front_lidar()
