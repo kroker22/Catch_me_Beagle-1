@@ -7,7 +7,7 @@ from beagle_msgs.action import Distbeagle
 class RidarActionServer(Node):
 
     def __init__(self):
-        super().__init__('ridar_action_server')
+        super().__init__('beagle_action_server')
         self.action_server = ActionServer(
             self,
             Distbeagle,
