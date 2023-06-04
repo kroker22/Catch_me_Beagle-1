@@ -3,6 +3,8 @@ from rclpy.action import ActionServer, CancelResponse, GoalResponse
 from rclpy.node import Node
 from std_msgs.msg import Float64
 from beagle_msgs.action import Distbeagle
+import time
+from roboid import *
 
 class RidarActionServer(Node):
 
@@ -19,6 +21,7 @@ class RidarActionServer(Node):
         self.publisher = self.create_publisher(Float64, 'target_distance', 10)
         self.current_distance = 0.0
 
+
     def goal_callback(self, goal_request):
         self.get_logger().info('Received goal request')
         return GoalResponse.ACCEPT
@@ -33,6 +36,12 @@ class RidarActionServer(Node):
         result_msg = Distbeagle.Result()
 
         while rclpy.ok():
+            
+            beagle = Beagle()
+
+            beagle.start_lidar()
+            beagle.wait_until_lidar_ready()    
+            
             if 250 <= beagle.rear_lidar() or beagle.right_lidar() or beagle.right_rear_lidar() <= 400:
                 beagle.sound("siren", 1)
                 time.sleep(1)
