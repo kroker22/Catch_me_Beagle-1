@@ -1,0 +1,8 @@
+#Goal
+float64 target_distance
+---
+#Result
+float64 current_distance
+---
+#Feedback
+bool success
