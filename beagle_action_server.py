@@ -6,6 +6,11 @@ from beagle_msgs.action import Distbeagle
 import time
 from roboid import *
 
+beagle = Beagle()
+beagle.start_lidar()
+beagle.wait_until_lidar_ready()
+print('lidar starts')
+
 class RidarActionServer(Node):
     def __init__(self):
         super().__init__('beagle_action')
@@ -29,10 +34,6 @@ class RidarActionServer(Node):
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal_handle):
-        beagle = Beagle()
-        beagle.start_lidar()
-        beagle.wait_until_lidar_ready()
-        print('lidar starts')
 
         self.get_logger().info('Executing goal...')
         feedback_msg = Distbeagle.Feedback()
