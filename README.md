@@ -1,5 +1,6 @@
 # Catch me Beagle
-광운대학교 지능형로봇학과 로봇프로그래밍 텀프로젝트
+로봇프로그래밍 프로젝트 코드입니다
+
 ## 팀원 구성
 |팀원|역할|
 |:---:|:---:|
@@ -14,3 +15,4 @@
 - Topic, Service, Action, Parameter, Argument, launch 모두 사용
 
 ## 프로젝트 주제
+보드게
