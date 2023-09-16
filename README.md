@@ -6,7 +6,7 @@
 ## 팀원 구성
 |팀원|역할|
 |:---:|:---:|
-|[장동준(팀장)](https://github.com/ehdxns)|전체 지휘 총괄 및 일정 조율, Action 구현, 전체 디버깅|
+|[장동준](https://github.com/ehdxns)|전체 지휘 총괄 및 일정 조율, Action 구현, 전체 디버깅|
 |[장홍기](https://github.com/krokroak)|Topic / Service / Launch 구현|
 |[배유호](https://github.com/BeY0ndH)|하드웨어 제작, Action / Parameter / Argument 구현|
 |[정윤석](https://github.com/yoonseok777)|하드웨어 제작, Service / Parameter / Argument 구현|
