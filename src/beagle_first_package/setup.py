@@ -2,6 +2,7 @@ from setuptools import setup
 import os
 import glob
 package_name = 'beagle_first_package'
+# clone this
 
 setup(
     name=package_name,
